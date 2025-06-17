@@ -1,0 +1,33 @@
+﻿@page
+@model WebBlog.RazorPages.Pages.Blog.CreateModel
+<div class="page-wrapper">
+    <div class="blog-container">
+        <div class="form">
+            <div class="form-box blog">
+                <span class="title">Bài viết</span>
+                    <form id="createForm" enctype="multipart/form-data">
+                        <div class="input-box">
+                            <input id="title" name="Title" placeholder="Tiêu đề" required />
+                        </div>
+                        <div class="input-box">
+                        <input id="content" name="Content" placeholder="Nội dung" required />
+                        </div>
+                        <div class="input-box">
+                            <input id="tag" name="Tags" type="text" placeholder="Tag" required />
+                        </div>
+                        <div class="input-box">
+                            <input id="image" name="Image" type="file" placeholder="Ảnh" required />
+                        </div>
+                        <div class="form-buttons">
+                            <button type="button" class="btn-cancel" onclick="window.location.href='/Blog/Index'">Hủy</button>
+                            <button type="submit" class="submit">Đăng</button>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/blog/create.js"></script>
+}

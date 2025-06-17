@@ -1,0 +1,371 @@
+﻿html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial;
+    padding: 0px;
+    background: #e1e1e1;
+}
+
+.header {
+    max-width: 500px;
+    margin: auto;
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+    background: white;
+    border-radius: 13px;
+    border: 1px solid #ddd;
+}
+
+.create-post-link {
+    display: block;
+    padding: 12px 20px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 13px;
+    color: #888;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.leftcolumn {
+    float: left;
+    width: 100%;
+    padding-left: 20px;
+}
+
+.header-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-title {
+    margin: 0;
+    font-size: 20px;
+}
+
+.action-buttons a {
+    margin-left: 15px;
+}
+
+
+.post-box {
+    max-width: 500px;
+    margin: auto;
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 13px;
+    border: 1px solid #ddd;
+    word-break: break-word;
+    min-height: 540px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.footer {
+    padding: 20px;
+    text-align: center;
+    background: #ddd;
+    margin-top: 20px;
+}
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: #e1e1e1;
+    padding:34px;
+}
+
+.auth-container {
+    align-items: center;
+    justify-content: center;
+    height: 550px;
+    width: 100%;
+    max-width: 430px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.blog-container{
+    align-items: center;
+    justify-content: center;
+    height:700px;
+    width:800px;
+    background-color:white;
+    border-radius:10px;
+    padding:30px;
+}
+
+.auth-container {
+    padding: 30px;
+}
+
+    .auth-container .form .title {
+        font-size: 27px;
+        font-weight: 600;
+        position: relative;
+    }
+
+.form .title::before {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 3px;
+    bottom: -8px;
+    left: 0;
+    background-color: #258cfb;
+    border-radius: 25px;
+}
+.form .input-box{
+    margin-top: 30px;
+    position: relative;
+    height: 50px;
+    width: 100%;
+    
+}
+.input-box input{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding: 0 35px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    border-bottom: 2px solid #ccc;
+    border-top: 2px solid transparent;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: center; /* căn giữa ngang */
+    gap: 20px; /* khoảng cách giữa các nút */
+    margin-top: 230px;
+}
+
+    .form-buttons button {
+        height: 50px;
+        width: 90px;
+        border: none;
+        background-color: #4070f4;
+        color: white;
+        border-radius: 33px;
+        letter-spacing: 1px;
+        font-size: 17px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .form-buttons button:hover {
+            background-color: #2f5cd3;
+        }
+
+.input-box input:is(:focus, :valid){
+    border-bottom-color: #4070f4;
+}
+.input-box i{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 23px;
+}
+.form .checkbox-text {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.checkbox-text .checkbox-content {
+    display: flex;
+    align-items: center;
+}
+.checkbox-content input{
+    margin: 0 8px 0 4px;
+    accent-color: #4070f4;
+}
+.form .text{
+    color: #333;
+    font-size:14px;
+}
+.form a.text{
+    color:#4070f4;
+    text-decoration: none;
+}
+    .form a:hover {
+        text-decoration: underline;
+    }
+
+.form .LoginButton {
+    margin-top: 179px;
+}
+    .form .LoginButton input {
+        border: none;
+        background-color: #4070f4;
+        color: white;
+        border-radius: 13px;
+        letter-spacing: 1px;
+        font-size: 17px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+    }
+
+.form .createBlog{
+    margin-top: 179px;
+}
+
+    .form .createBlog input {
+        border: none;
+        height: 50px;
+        width: 70px;
+        background-color: #4070f4;
+        color: white;
+        border-radius: 13px;
+        letter-spacing: 1px;
+        font-size: 17px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+.form .return {
+    margin-top: 19px;
+
+}
+
+    .form .return input {
+        height: 50px;
+        width:70px;
+        border: none;
+        background-color: #4070f4;
+        color: white;
+        border-radius: 13px;
+        letter-spacing: 1px;
+        font-size: 17px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+.form .ResetButton {
+    margin-top: 140px;
+}
+
+    .form .ResetButton input {
+        border: none;
+        background-color: #4070f4;
+        color: white;
+        border-radius: 13px;
+        letter-spacing: 1px;
+        font-size: 17px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+.form .ForgotButton {
+    margin-top: 300px;
+}
+
+    .form .ForgotButton input {
+        border: none;
+        background-color: #4070f4;
+        color: white;
+        border-radius: 13px;
+        letter-spacing: 1px;
+        font-size: 17px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+.form .RegisterButton {
+    margin-top: 60px;
+}
+
+    .form .RegisterButton input {
+        border: none;
+        background-color: #4070f4;
+        color: white;
+        border-radius: 13px;
+        letter-spacing: 1px;
+        font-size: 17px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+
+.button input:hover{
+    background-color: #265df2;
+}
+.form .login-signup{
+    margin-top:15px;
+    text-align: center;
+}
+
+
+/*---------Pagination----------------*/
+.pagin{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:30px;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.pagin button{
+    background-color: #4070f4;
+    width: 65px;
+    height: 35px;
+    border-radius: 35px;
+    font-size
+}
+
+/*Responsive layout*/
+@media screen and (max-width: 800px) {
+    .leftcolumn, .rightcolumn {
+        width: 100%;
+        padding: 0;
+    }
+}

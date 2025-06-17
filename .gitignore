@@ -1,0 +1,39 @@
+# ASP.NET Core
+bin/
+obj/
+**/Prop	erties/launchSettings.json
+
+# Visual Studio
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln.docstates
+*.userosscache
+*.userprefs
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+.log
+.vs
+
+# Configuration files
+appsettings.json
+appsettings.Development.json
+secrets.json
+
+# .NET
+*.pdb
+*.exe
+*.dll
+*.db
+*.lock.json

@@ -1,0 +1,44 @@
+﻿@page
+@model WebBlog.RazorPages.Pages.Auth.LoginModel
+@{
+    Layout = "_Layout";
+}
+<div class="page-wrapper">
+    <div class="auth-container">
+        <div class="form">
+            <div class="form-box login">
+                <span class="title">Đăng nhập</span>
+                <form id="loginForm">
+                    <div class="input-box">
+                        <input id="userName" name="UserName" placeholder="Tên người dùng" required />
+                    </div>
+                    <div class="input-box">
+                        <input id="password" name="Password" type="password" placeholder="Mật khẩu" required />
+                    </div>
+                    <div class="checkbox-text">
+                        <div class="checkbox-content">
+                            <input type="checkbox" id="logCheck" />
+                            <label for="logCheck" class="text">Nhớ tôi</label>
+                        </div>
+                        <a href="../Auth/ForgotPassword" class="text">Quên mật khẩu?</a>
+                    </div>
+                    <div class="input-box LoginButton">
+                        <input type="submit" value="Đăng nhập" />
+                    </div>
+
+                </form>
+                <div class="login-signup">
+                    <span class="text">Chưa có tài khoản?</span>
+                    <a href="../Auth/Register" class="text signup-text">Đăng ký</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/auth/login.js"></script>
+}
+
+
+

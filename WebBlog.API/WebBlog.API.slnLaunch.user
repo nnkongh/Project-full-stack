@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "WebBlog.API\\WebBlog.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "WebBlog.RazorPages\\WebBlog.RazorPages.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
