@@ -49,7 +49,7 @@ namespace WebBlog.API.Repo
 
         public async Task<Blog?> GetByIdAsync(int id)
         {
-            var item = await _db.Blogs.Include(c => c.Comments).FirstOrDefaultAsync(x => x.Id == id);
+            var item = await _db.Blogs.Include(c => c.Comments).ThenInclude(c => c.User).FirstOrDefaultAsync(x => x.Id == id);
             if (item == null) return null;
             return item;
         }

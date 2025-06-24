@@ -7,7 +7,6 @@ namespace WebBlog.API.Repository
     public class CommentRepository : ICommentRepository
     {
         private readonly ApplicationDbContext _context;
-
         public CommentRepository(ApplicationDbContext context)
         {
             _context = context;
@@ -31,15 +30,9 @@ namespace WebBlog.API.Repository
             await _context.SaveChangesAsync();
             return item;
         }
-
-        public async Task<List<Comment>> GetAllAsync()
+        public async Task<List<Comment?>> GetByBlogIdAsync(int blogId)
         {
-            return await _context.Comments.ToListAsync();
-        }
-
-        public async Task<Comment?> GetByIdAsync(int id)
-        {
-            var comment = await _context.Comments.FindAsync(id);
+            var comment = await _context.Comments.Include(c => c.User).Where(c => c.BlogId == blogId).OrderByDescending(c => c.CreatedAt).ToListAsync();
             return comment;
         }
 

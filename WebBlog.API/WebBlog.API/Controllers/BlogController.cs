@@ -18,7 +18,6 @@ namespace WebBlog.API.Controllers
         private readonly IBlogRepository _repo;
         private readonly ILogger<BlogController> _logger;
         private readonly IPhotoService _photo;
-
         public BlogController(IBlogRepository repo, IPhotoService photo, ILogger<BlogController> logger)
         {
             _repo = repo;
@@ -40,7 +39,8 @@ namespace WebBlog.API.Controllers
             {
                 return NotFound();
             }
-            return Ok(blog.MapBlog());
+            var result = blog.MapBlog();
+            return Ok(result);
         }
         [HttpPost("create")]
         public async Task<ActionResult<Blog>> CreateBlog([FromForm]BlogViewModel blog)

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using WebBlog.API.Interface;
 using WebBlog.API.Models;
 using WebBlog.API.ViewModel.Dto;
@@ -12,49 +13,31 @@ namespace WebBlog.API.Controllers
     [ApiController]
     [Route("api/auth")]
     public class AuthenController : ControllerBase
-    {   
+    {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IAuthService _token;
+        private readonly IAuthService _authService;
         private readonly IEmailService _emailSender;
         private readonly ILogger<AuthenController> _logger;
 
-        public AuthenController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IAuthService tokenService,IEmailService emailSender, ILogger<AuthenController> logger)
+        public AuthenController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IAuthService tokenService, IEmailService emailSender, ILogger<AuthenController> logger)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _token = tokenService;
+            _authService = tokenService;
             _emailSender = emailSender;
             _logger = logger;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var user = new AppUser
-            {
-                UserName = model.UserName,
-                Email = model.Email
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if(result.Succeeded)
-            {
-                var roleExists = await _roleManager.RoleExistsAsync("User");
-                if(!roleExists)
-                {
-                    var role = new IdentityRole("User");
-                    await _roleManager.CreateAsync(role);
-                }
-                await _userManager.AddToRoleAsync(user, "User");
-                return Ok("User created successfully");
-            }
-            else
-            {
-                return StatusCode(500, result.Errors);
-            }
+            await _authService.Regiser(model);
+            return Ok("User registered successfully");
+
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto model)
@@ -63,15 +46,8 @@ namespace WebBlog.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == model.UserName);
-            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
-            {
-                return Unauthorized("Invalid username or password");
-            }   
-
-            var tokenDto = await _token.CreateToken(user, populateExp: true);
-            _token.SetTokenInsideCookie(tokenDto, HttpContext);
-            return Ok(new {message = "Hello"});
+            await _authService.Login(model, HttpContext);
+            return Ok();
         }
         [HttpPost("forgot")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgot)
@@ -80,113 +56,48 @@ namespace WebBlog.API.Controllers
             {
                 return BadRequest();
             }
-            if (string.IsNullOrEmpty(forgot.ClientUri))
-            {
-                throw new ArgumentNullException(nameof(forgot.ClientUri), "Client URI cannot be null or empty.");
-            }
-            try
-            {
-                _logger.LogWarning($"Log: {forgot.ClientUri}");
-                var user = await _userManager.FindByEmailAsync(forgot.Email!);
-                _logger.LogWarning($"User with email {forgot.Email} requested password reset.");
-                if (user == null)
-                {
-                    return NotFound(user);
-                }
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var param = new Dictionary<string, string>
-            {
-                { "token",token },
-                {"email",forgot.Email }
-
-            };
-                var callback = QueryHelpers.AddQueryString(forgot.ClientUri!, param);
-                _logger.LogInformation($"Password reset link: {callback}");
-                var message = new Message([user.Email], "Reset password token", callback);
-                _emailSender.SendEmail(message);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while processing the forgot password request.");
-                return StatusCode(500, "Internal server error. Please try again later.");
-            }
-           
+            await _authService.ForgotPassword(forgot);
             return Ok();
         }
         [HttpPost("reset")]
         public async Task<IActionResult> ResetPassword(PasswordReset reset)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            var user = await _userManager.FindByEmailAsync(reset.Email);
-            if (user == null)
-            {
-                return BadRequest(user);
-            }
-            if (reset.Password != reset.ConfirmPassword)
-            {
-                return BadRequest("Password and Confirm Password do not match");
-            }
-            var result = await _userManager.ResetPasswordAsync(user, reset.Token, reset.Password);
-            if(result.Succeeded)
-            {
-                return Ok("Password reset successfully");
-            }
-            else
-            {
-                return BadRequest(result.Errors);
-            }
-            
+            await _authService.ResetPassword(reset);
+            return Ok("Password reset successfully");
         }
 
         [HttpPost("assign-role")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignRole(AssignRoleDto assign)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var user = await _userManager.FindByNameAsync(assign.UserName);
-            if(user == null)
-            {
-                return BadRequest("User not found");
-            }
-            var roleExists = await _roleManager.RoleExistsAsync(assign.Role);
-            if(!roleExists)
-            {
-                return BadRequest("Role not found");
-            }
-            var result = await _userManager.AddToRoleAsync(user, assign.Role);
-            if(!result.Succeeded)
-            {
-                return BadRequest(result.Errors);
-            }
+            await _authService.AssignRole(assign);
             return Ok("Role assigned successfully");
         }
         [HttpPost("add-role")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddRole(AddRoleDto addRole)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            var roleExists = await _roleManager.RoleExistsAsync(addRole.Role);
-            if (roleExists)
-            {
-                return BadRequest("Role already exists");
-            }
-            var role = new IdentityRole(addRole.Role);
-            var result = await _roleManager.CreateAsync(role);
-            if (result.Succeeded)
-            {
-                return Ok("Role created successfully");
-            }
-            else
-            {
-                return BadRequest(result.Errors);
-            }
+            await _authService.AddRole(addRole);
+            return Ok("Role added successfully");
+        }
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _authService.Logout(User, HttpContext);
+            return Ok("Logged out successfully");
+
         }
     }
 }

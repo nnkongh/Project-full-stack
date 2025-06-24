@@ -1,6 +1,7 @@
-﻿import { get } from "../utils/httpClient.js";
-
-
+﻿import { formatDate } from "../utils/formDate.js";
+import { get } from "../utils/httpClient.js";
+import { setupCommentForm } from "../comment/cmtCreate.js";
+import { loadComments } from "../comment/cmtGetAll.js"; 
 document.addEventListener("DOMContentLoaded", async function () {
     const container = document.getElementById("blog-detail");
     const urlParams = new URLSearchParams(window.location.search); // url params dùng để lấy tham số từ URL 
@@ -9,35 +10,64 @@ document.addEventListener("DOMContentLoaded", async function () {
     //Kiểm tra xem id có tồn tại không
     if (!id) {
         alert("Không tìm thấy id bài viết");
-        window.location.href = "/Blog/Index";s
+        window.location.href = "/Blog/Index"; s
         return;
     }
     try {
-        // Lấy thông tin từ response
-        const response = await get(`https://localhost:7141/api/blog/get/${id}`); 
+        // Lấy thông tin từ responseq
+        const response = await get(`https://localhost:7141/api/blog/${id}`);
         if (!response.ok) {
             throw new Error("Không tìm thấy bài viết");
         }
         // chuyển đổi thành kiểu json
         const blog = await response.json();
+
+        const createdAt = formatDate(blog.createdAt);
+        const imageHtl = blog.image
+            ? `<img src=${blog.image.replace("http://", "https://")} alt="Ảnh bài viết" id="imagePreview" class="post-image"; style="width:100%; max-height:500px; object-fit:contain;" />` : "";
         container.innerHTML = `
-            <dl class="row">
-                <dt class="col-sm-2">Tiêu đề</dt>
-                <dd class="col-sm-10">${blog.Title}</dd>
+            <div class="page-wrapper">
+                <div class="detail-wrapper">
+                    <div class="detail-container">
+                        <div class="blog-content">
+                            <div class="header-title>
+                                <p class="detail-title">${blog.title}<p>
+                                <p class="time">${createdAt}</p>
+                                <textarea name="Content" disabled>${blog.content} </textarea>
+                            </div>
 
-                <dt class="col-sm-2">Nội dung</dt>
-                <dd class="col-sm-10">${blog.Content}</dd>"
+                        <div>
+                          ${imageHtl}
+                          <textarea name="Tags" disabled>${blog.tags}</textarea>
+                        </div>
 
-                <dt class="col-sm-2">Tags</dt>
-                <dd class="col-sm-10">${blog.Tags}</dd>
+                        <div class="return-btn">
+                          <button type="button" class="btn-cancel" onclick="window.location.href='/Blog/Index'">Quay về</button>
+                          <button type="button" class="btn-cancel" id="comment-toggle-btn">Comment</button>
+                       </div>
 
-                <dt class="col-sm-2">Ngày đăng</dt>
-                <dd class="col-sm-10">${new Date(blog.CreatedAt).toLocaleDateString("vi-VN")}</dd>
+                   </div>
 
-                <dt class="col-sm-2">Hình ảnh</dt>
-                <dd class="col-sm-10"> ${blog.Image ? `<img src="{blog.Image}" alt="Image post" style="max-height: 200px"/>` : ""};
-            </dl>
+                   <div class="comment-section" style="display:none; margin-top: 20px">
+                        <h3>Bình luận</h3>
+                        <div id=comment-list></div>
+                        <textarea id="comment-input" rows="3" placeholder="Nhập bình luận của bạn" style="width:100%; margin-top:10px"></textarea>
+                        <button id="submit-comment" class="btn-submit">Gửi bình luận</button>
+                   </div>
+
+                </div>
+                </div>
+            </div>
             `
+        document.getElementById("comment-toggle-btn").addEventListener("click", function () {
+            const section = document.querySelector(".comment-section");
+            section.style.display = section.style.display === "none" ? "block" : "none";
+
+            if (section.style.display === "block") {
+                loadComments(blogId); // Tải bình luận khi mở phần bình luận
+            }
+        })
+        setupCommentForm(blog.id);
     } catch (error) {
         container.innerHTML = `<p class="text-danger">Lỗi: ${error.message}</p>`;
     }

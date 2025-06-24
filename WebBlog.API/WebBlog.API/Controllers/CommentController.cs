@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebBlog.API.Mapper;
 using WebBlog.API.Repository;
 using WebBlog.API.ViewModel.Comment;
@@ -7,6 +9,7 @@ namespace WebBlog.API.Controllers
 {
     [Route("api/comment")]
     [ApiController]
+    [Authorize(Roles = "User")]
     public class CommentController : ControllerBase
     {
         public readonly ICommentRepository _cmtRepo;
@@ -17,23 +20,16 @@ namespace WebBlog.API.Controllers
             _blogRepo = blogRepo;
         }
         [HttpGet]
-        [Route("Get")]
-        public async Task<IActionResult> GetAll()
-        {
-            var comments = await _cmtRepo.GetAllAsync();
-            var commentDTOs = comments.Select(c => c.MapComment());
-            return Ok(commentDTOs);
-        }
-        [HttpGet]
         [Route("Get/{id:int}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetByBlogId(int id)
         {
-            var comment = await _cmtRepo.GetByIdAsync(id);
+            var comment = await _cmtRepo.GetByBlogIdAsync(id);
+            var result = comment.Select(c => c.MapComment()).ToList();
             if (comment == null)
             {
                 return NotFound();
             }
-            return Ok(comment.MapComment());
+            return Ok(result);
         }
         [HttpPost]
         [Route("Create/{blogId:int}")]
@@ -43,9 +39,14 @@ namespace WebBlog.API.Controllers
             {
                 return NotFound();
             }
-            var cmtDto = item.MapCreateComment(blogId);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if(userId == null)
+            {
+                return Unauthorized();
+            }
+            var cmtDto = item.MapCreateComment(blogId, userId);
             await _cmtRepo.CreateAsync(cmtDto);
-            return CreatedAtAction(nameof(GetById), new { id = cmtDto.Id }, cmtDto.MapComment());
+            return CreatedAtAction(nameof(GetByBlogId), new { id = cmtDto.Id }, cmtDto.MapComment());
         }
         [HttpPut]
         [Route("Update/{Id:int}")]

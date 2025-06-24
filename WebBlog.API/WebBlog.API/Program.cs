@@ -90,6 +90,7 @@ namespace WebBlog.API
             builder.Services.AddScoped<IPhotoService, PhotoService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             var email = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
             builder.Services.AddSingleton(email);

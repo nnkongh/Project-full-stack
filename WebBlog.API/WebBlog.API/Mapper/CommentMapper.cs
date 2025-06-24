@@ -14,15 +14,17 @@ namespace WebBlog.API.Mapper
                 Content = comment.Content,
                 CreatedAt = comment.CreatedAt,
                 BlogId = comment.BlogId,
-                
+                UserName = comment.User?.UserName, // Assuming Blog has a UserId property
             };
         }
-        public static Comment MapCreateComment(this CreateCommentDTO cmtDTO, int blogId)
+        public static Comment MapCreateComment(this CreateCommentDTO cmtDTO, int blogId, string userId)
         {
             return new Comment
             {
                 Content = cmtDTO.Content,
                 BlogId = blogId,
+                UserId = userId, // Assuming CreateCommentDTO has a UserId property
+                CreatedAt = DateTime.UtcNow // Set CreatedAt to current time
             };
         }
         public static Comment MapUpdateComment(this UpdateCommentDTO cmtDTO)

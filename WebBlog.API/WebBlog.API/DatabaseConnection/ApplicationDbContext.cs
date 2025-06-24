@@ -10,7 +10,7 @@ namespace WebBlog.API.DatabaseConnection
         {
         }
         public DbSet<Blog> Blogs { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Comment> Comments { get; set; }    
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -21,6 +21,11 @@ namespace WebBlog.API.DatabaseConnection
                .HasIndex(u => u.NormalizedEmail)
                .IsUnique();
             
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(c => c.UserId) 
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 

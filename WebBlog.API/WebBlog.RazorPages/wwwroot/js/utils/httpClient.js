@@ -54,9 +54,9 @@ export async function remove(url) {
     });
     return res;
 }
-export async function put(url, data) {
+export async function postImg(url, data) {
     const res = await fetch(url, {
-        method: "PUT",
+        method: "POST",
         credentials: "include",
         body: data,
     });

@@ -1,4 +1,4 @@
-﻿import { get, postForm, put } from "../utils/httpClient.js";
+﻿import { get, postForm} from "../utils/httpClient.js";
 
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
     //Lấy dữ liệu bài viết từ resposne
     const post = await res.json();
-    console.log("Post data:", post);
 
     document.getElementById("id").value = post.id;
     document.getElementById("title").value = post.title;
@@ -36,7 +35,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         e.preventDefault();
 
         const form = document.getElementById("editPost");
-        console.log("Hello");
         const formData = new FormData();
         formData.append("id", document.getElementById("id").value);
         formData.append("title", document.getElementById("title").value);

@@ -1,0 +1,42 @@
+﻿@page
+@model WebBlog.RazorPages.Pages.Profile.ProfileModel
+@{
+    Layout = "_Layout";
+}
+
+
+<div class="page-wrapper">
+    <div class="profile-container">
+        <div class="form">
+            <span class="title">Thông tin cá nhân</span>
+
+            <div class="form-box profile">
+                <div class="form-image">
+                    <img src="" id="avatar"  class="avatar" alt="Ảnh đại diện" />
+                </div>
+                <form id="createForm" enctype="multipart/form-data">
+                    <div class="image-box">
+                        <input id="image" name="Image" type="file" placeholder="Ảnh" required />
+                    </div>
+                    <ul>
+                        <li>
+                            <p><strong>User Name: </strong><span id="username"></span></p>
+                        </li>
+                        <li>
+                            <p><strong>Email: </strong><span id="email"></span></p>
+                        </li>
+                        <li>
+                            <p><strong>Role: </strong><span id="role"></span></p>
+                        </li>
+                    </ul>
+                    <div class="form-button">
+                        <button type="button" class="btn-cancel" onclick="window.location.href='/Blog/Index'">Hủy</button>
+                        <button type="submit" class="submit">Đăng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="~/js/profile/index.js"></script>

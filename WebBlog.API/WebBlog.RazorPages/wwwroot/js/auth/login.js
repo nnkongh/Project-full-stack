@@ -8,9 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!form) return;
 
     form.addEventListener("submit", async function (e) {
-        console.log("Form submit event triggered");
         e.preventDefault();
-        console.log("Call API login");
         const userName = document.getElementById("userName").value;
         const passWord = document.getElementById("password").value;
 

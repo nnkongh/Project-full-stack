@@ -6,7 +6,8 @@ namespace WebBlog.RazorPages.Pages.Blog
     {
         public void OnGet()
         {
-
+            ViewData["IsBlogPage"] = true;
+            ViewData["IsLoginPage"] = true;
         }
     }
 }

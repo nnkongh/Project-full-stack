@@ -7,6 +7,7 @@ namespace WebBlog.API.ViewModel.Comment
         public int Id { get; set; }
         public string Content { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public int? BlogId { get; set; }
+        public int BlogId { get; set; }
+        public string? UserName { get; set; }
     }
 }

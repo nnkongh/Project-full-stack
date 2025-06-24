@@ -1,39 +1,38 @@
 ﻿@page
 @model RazorPages.Pages.Blog.EditModel
-<h1>Edit</h1>
 
-<h4>Blog</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form id="editPost">
-            <input type="hidden" name="Id" id="id" />
-            <div class="form-group">
-                <label for="Title"></label>
-                <input id="title" name="Title" class="form-control" />
+<div class="page-wrapper">
+    <div class="blog-container">
+        <div class="form">
+            <div class="form-box blog">
+                <span class="title">Chỉnh sửa bài viết</span>
+                <form id="editPost" enctype="multipart/form-data">
+                    <input type="hidden" name="Id" id="id"/>
+                    <div class="input-box">
+                        <input id="title" name="Title" placeholder="Tiêu đề" required/>
+                    </div>
+                    <div class="input-box">
+                        <input id="content" name="Content" placeholder="Nội dung" required />
+                    </div>
+                    <div class="input-box">
+                        <input id="tags" name="Tags" placeholder="Tags" required />
+                    </div>
+                    <div class="input-box">
+                        <input id="image" name="Image" type="file" place="Tiêu đề" required />
+                        <img id="imagePreview" src="" alt="present" style="display:none; max-height: 200px; margin-top:10px;" />
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="btn-cancel" onclick="window.location.href='/Blog/Index'">Hủy</button>
+                        <button type="submit" class="submit">Lưu</button>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="Content" ></label>
-                <input id="content" name="Content" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="Tags" ></label>
-                <input id="tags" name="Tags" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="Image" class="control-label"></label>
-                <input id="image" name="Image" type="file" class="form-control" />
-                <img id="imagePreview" src="" alt="present" style="max-height: 200px; margin-top:10px;"/>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+    
     </div>
 </div>
 
-<div>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

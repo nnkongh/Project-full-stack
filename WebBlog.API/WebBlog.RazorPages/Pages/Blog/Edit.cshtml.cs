@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebBlog.RazorPages.Pages.Blog
 {
@@ -6,6 +7,8 @@ namespace WebBlog.RazorPages.Pages.Blog
     {
         public void OnGet()
         {
+            ViewData["IsBlogPage"] = true;
+            ViewData["IsLoginPage"] = true;
         }
     }
 }
